@@ -36,9 +36,16 @@ api.interceptors.response.use(
 );
 
 interface LoginResponse {
-  token: string;
-  user: Record<string, unknown>;
-  message?: string;
+  accessToken: string;
+  code: string;
+  email: string;
+  name: string;
+  phone: string;
+  profileImage: string;
+  responseCode: string;
+  responseMessage: string;
+  roleCode: string;
+  roleName: string;
 }
 
 interface ApiError {
@@ -56,49 +63,40 @@ interface ApiError {
 
 export const login = async (credentials: { phone: string; password: string }) => {
   try {
-    // Validate credentials format
     if (!credentials.phone || !credentials.password) {
       throw new Error('Phone and password are required');
     }
 
     const response = await api.post<LoginResponse>('/v1/auth/login', credentials);
     
-    const { token, user } = response.data;
+    const { accessToken } = response.data;
+    const user = response.data
     
-    if (!token) {
+    if (!accessToken) {
       throw new Error('Authentication failed: No token received');
     }
 
-    setAuthToken(token);
+    setAuthToken(accessToken);
     return user;
 
   } catch (err: unknown) {
     const error = err as ApiError;
     
-    // Handle CORS errors
     if (error.message?.includes('Network Error')) {
       throw new Error('Unable to connect to the server. Please check your connection or try again later.');
     }
 
-    // Handle API error responses
     if (error.response) {
       const data = error.response.data ?? {};
       const message = (data.responseMessage as string) || data.message || data.error || 'Login failed';
-
-      // If backend gives a specific response code, include it in logs
-      if (data.responseCode) {
-        // keep message as-is, but you could map responseCode to friendlier text here
-      }
 
       if (error.response.status === 401) {
         throw new Error('Invalid phone number or password');
       }
 
-      // For other 4xx/5xx responses, surface backend message when available
       throw new Error(message);
     }
 
-    // Generic error fallback
     throw new Error('An unexpected error occurred. Please try again.');
   }
 };
@@ -110,6 +108,36 @@ export const logout = () => {
 export const getDashboardData = async () => {
   const response = await api.get('/api/v1/dashboard/summary');
   return response.data;
+};
+
+interface RegisterPayload {
+  name: string;
+  phone: string;
+  email: string;
+  address?: string;
+  password: string;
+}
+
+export const registerUser = async (payload: RegisterPayload) => {
+  try {
+    if (!payload.name || !payload.phone || !payload.email || !payload.password) {
+      throw new Error('Please fill all required fields');
+    }
+
+    const response = await api.post('/v1/auth/register', payload);
+    return response.data;
+  } catch (err: unknown) {
+    const error = err as ApiError;
+    if (error.message?.includes('Network Error')) {
+      throw new Error('Unable to connect to the server. Please check your connection or try again later.');
+    }
+    if (error.response) {
+      const data = error.response.data ?? {};
+      const message = (data.responseMessage as string) || data.message || data.error || 'Registration failed';
+      throw new Error(message);
+    }
+    throw new Error('An unexpected error occurred. Please try again.');
+  }
 };
 
 export default api;

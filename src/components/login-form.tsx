@@ -69,7 +69,7 @@ export function LoginForm({
                 <Input
                   id="phone"
                   type="tel"
-                  placeholder="082123456789"
+                  placeholder="08234567232"
                   {...register("phone", {
                     required: "Phone number is required",
                     pattern: {
@@ -77,6 +77,7 @@ export function LoginForm({
                       message: "Please enter a valid phone number",
                     },
                   })}
+                  value="08234567232"
                   disabled={isLoading}
                   aria-invalid={!!errors.phone}
                 />
