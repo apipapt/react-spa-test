@@ -1,13 +1,14 @@
 import axios, { type AxiosInstance } from 'axios';
 
-const env = import.meta.env as unknown as Record<string, unknown>;
-const BASE_URL = typeof env.VITE_API_BASE_URL === 'string' ? env.VITE_API_BASE_URL : 'https://sandbox.dibuiltadi.com';
-
+// Use relative URL for API calls (will be handled by Vite proxy)
 const api: AxiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: '/api',
   headers: {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
   },
+  // No need for withCredentials when using proxy
+  withCredentials: false,
 });
 
 export const setAuthToken = (token: string | null) => {
@@ -34,22 +35,66 @@ api.interceptors.response.use(
   }
 );
 
-export const login = async (credentials: Record<string, string>) => {
+interface LoginResponse {
+  token: string;
+  user: Record<string, unknown>;
+  message?: string;
+}
+
+interface ApiError {
+  response?: {
+    data?: {
+      message?: string;
+      error?: string;
+    };
+    status?: number;
+  };
+  message?: string;
+}
+
+export const login = async (credentials: { phone: string; password: string }) => {
   try {
-    const response = await api.post('/auth/login', credentials);
-    const { token, user } = response.data || {};
-    if (!token) throw new Error('Token not returned from login');
-    setAuthToken(token);
-    return user ?? null;
-  } catch (err: unknown) {
-    let message = 'Login failed';
-    if (err instanceof Error) message = err.message || message;
-    else {
-      const e = err as { response?: { data?: { message?: unknown } }; message?: unknown };
-      const maybeMsg = e.response?.data?.message ?? e.message;
-      if (typeof maybeMsg === 'string') message = maybeMsg;
+    // Validate credentials format
+    if (!credentials.phone || !credentials.password) {
+      throw new Error('Phone and password are required');
     }
-    throw new Error(message);
+
+    const response = await api.post<LoginResponse>('/v1/auth/login', credentials);
+    
+    const { token, user } = response.data;
+    
+    if (!token) {
+      throw new Error('Authentication failed: No token received');
+    }
+
+    setAuthToken(token);
+    return user;
+
+  } catch (err: unknown) {
+    const error = err as ApiError;
+    
+    // Handle CORS errors
+    if (error.message?.includes('Network Error')) {
+      throw new Error('Unable to connect to the server. Please check your connection or try again later.');
+    }
+
+    // Handle API error responses
+    if (error.response) {
+      const message = error.response.data?.message || error.response.data?.error || 'Login failed';
+      
+      if (error.response.status === 401) {
+        throw new Error('Invalid phone number or password');
+      }
+      
+      if (error.response.status === 400) {
+        throw new Error(message);
+      }
+
+      throw new Error(message);
+    }
+
+    // Generic error fallback
+    throw new Error('An unexpected error occurred. Please try again.');
   }
 };
 
@@ -58,7 +103,7 @@ export const logout = () => {
 };
 
 export const getDashboardData = async () => {
-  const response = await api.get('/dashboard/summary');
+  const response = await api.get('/api/v1/dashboard/summary');
   return response.data;
 };
 
