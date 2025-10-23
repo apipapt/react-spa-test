@@ -46,6 +46,8 @@ interface ApiError {
     data?: {
       message?: string;
       error?: string;
+      responseMessage?: string;
+      responseCode?: string | number;
     };
     status?: number;
   };
@@ -80,16 +82,19 @@ export const login = async (credentials: { phone: string; password: string }) =>
 
     // Handle API error responses
     if (error.response) {
-      const message = error.response.data?.message || error.response.data?.error || 'Login failed';
-      
+      const data = error.response.data ?? {};
+      const message = (data.responseMessage as string) || data.message || data.error || 'Login failed';
+
+      // If backend gives a specific response code, include it in logs
+      if (data.responseCode) {
+        // keep message as-is, but you could map responseCode to friendlier text here
+      }
+
       if (error.response.status === 401) {
         throw new Error('Invalid phone number or password');
       }
-      
-      if (error.response.status === 400) {
-        throw new Error(message);
-      }
 
+      // For other 4xx/5xx responses, surface backend message when available
       throw new Error(message);
     }
 
