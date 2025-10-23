@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { login as apiLogin, logout as apiLogout, isLoggedIn } from '../lib/api';
+import { login as apiLogin, logout as apiLogout, isLoggedIn } from '../lib/api/login.api';
 import { AuthContext, type AuthContextType, type LoginCredentials, type User } from './context';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {

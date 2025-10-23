@@ -1,6 +1,9 @@
 import { createContext } from 'react';
 
-export type LoginCredentials = Record<string, string>;
+export type LoginCredentials = {
+  phone: string;
+  password: string;
+};
 export type User = Record<string, unknown> | null;
 
 export type AuthContextType = {

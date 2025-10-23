@@ -19,16 +19,9 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
-type LoginFormData = {
-  phone: string;
-  password: string;
-};
+import type { LoginCredentials } from '@/context/context';
 
-// Memastikan bahwa FormData sesuai dengan tipe yang diharapkan fungsi login
-const transformCredentials = (data: LoginFormData): Record<string, string> => ({
-  phone: data.phone,
-  password: data.password,
-});
+type LoginFormData = LoginCredentials;
 
 export function LoginForm({
   className,
@@ -49,7 +42,8 @@ export function LoginForm({
     try {
       setError(null);
       setIsLoading(true);
-      await login(transformCredentials(data));
+      // data already matches LoginCredentials shape
+      await login(data);
       navigate("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
