@@ -16,8 +16,8 @@ import {
 } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button";
 import { getProfile } from "@/lib/api/profile.api";
+import { ResetPasswordDialog } from "./components/form-reset-password";
 
 type Profile = {
   name?: string;
@@ -105,7 +105,7 @@ export default function ProfilePage() {
                   <div className="font-medium">{profile?.roleName ?? '-'}</div>
                 </div>
                 <div className="mt-4">
-                  <Button> Edit Password </Button>
+                  <ResetPasswordDialog />
                 </div>
               </CardContent>
             </Card>

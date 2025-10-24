@@ -1,6 +1,5 @@
 import * as React from "react"
-import { GalleryVerticalEnd } from "lucide-react"
-import { logout } from "@/lib/api/auth.api"
+import { getUser, logout } from "@/lib/api/auth.api"
 
 import {
   Sidebar,
@@ -28,6 +27,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 // This is sample data.
 const data = {
@@ -91,6 +92,8 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
+  const user = getUser();
   return (
     <Sidebar variant="floating" {...props}>
       <SidebarHeader>
@@ -98,12 +101,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <GalleryVerticalEnd className="size-4" />
+                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-full">
+                  <Avatar className="size-7">
+                    <AvatarImage src={user?.profileImage} />
+                    <AvatarFallback>{user?.name ? user.name.split(" ").map((n: string)=>n[0]).slice(0,2).join("") : "U"}</AvatarFallback>
+                  </Avatar>
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-medium">Documentation</span>
-                  <span className="">v1.0.0</span>
+                  <span className="font-semibold">{user?.name}</span>
+                  <span className="font-light">{user?.roleName}</span>
                 </div>
               </a>
             </SidebarMenuButton>

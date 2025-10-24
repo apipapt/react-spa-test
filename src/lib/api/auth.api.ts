@@ -24,6 +24,17 @@ export const setAuthToken = (token: string | null) => {
   }
 };
 
+export const setUser = (user: LoginResponse) => {
+  if (user) {
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+};
+
+export const getUser = () => {
+  const user = localStorage.getItem('user');
+  return user ? JSON.parse(user) : null;
+};
+
 export const clearAuthToken = () => {
   localStorage.removeItem('authToken');
   delete api.defaults.headers.common.Authorization;
@@ -84,6 +95,7 @@ export const login = async (credentials: { phone: string; password: string }) =>
     }
 
     setAuthToken(accessToken);
+    setUser(user);
     return user;
 
   } catch (err: unknown) {
