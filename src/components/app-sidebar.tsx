@@ -34,49 +34,35 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 const data = {
   navMain: [
     {
-      title: "Getting Started",
+      title: "Summary",
       url: "#",
       items: [
         {
-          title: "Installation",
-          url: "#",
+          title: "Daily Transactions",
+          url: "/daily-summary",
           isActive: true,
         },
         {
-          title: "Project Structure",
+          title: "Monthly Transactions",
+          url: "#",
+        },
+        {
+          title: "Yearly Transactions",
+          url: "#",
+        },
+        {
+          title: "Top Customers",
           url: "#",
         },
       ],
     },
     {
-      title: "Building Your Application",
+      title: "Menu Customers",
       url: "#",
-      items: [
-        {
-          title: "Routing",
-          url: "#",
-        },
-        {
-          title: "Data Fetching",
-          url: "#",
-        },
-        {
-          title: "Rendering",
-          url: "#",
-        },
-        {
-          title: "Caching",
-          url: "#",
-        },
-        {
-          title: "Styling",
-          url: "#",
-        },
-        {
-          title: "Optimizing",
-          url: "#",
-        },
-      ],
+    },
+    {
+      title: "Transactions",
+      url: "#",
     },
     {
       title: "Profile",

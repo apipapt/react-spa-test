@@ -111,7 +111,7 @@ export default function ProfilePage() {
             </Card>
 
             <div className="md:col-span-2">
-              <Card>
+              <Card className="h-full">
                 <CardHeader>
                   <CardTitle>Account details</CardTitle>
                   <CardDescription>Summary of your account information</CardDescription>

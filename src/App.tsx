@@ -5,6 +5,7 @@ import ProfilePage from './Pages/Dashbaord/Profile/profile-page';
 import SignupPage from './Pages/Signup/signup-page';
 import ProtectedRoute from './components/protected-route';
 import DashboardPage from './Pages/Dashbaord/page';
+import DailySummaryPage from './Pages/Dashbaord/Summary/daily-summary-page';
 
 function App() {
   return (
@@ -23,6 +24,14 @@ function App() {
           element={
             <ProtectedRoute>
               <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/daily-summary"
+          element={
+            <ProtectedRoute>
+              <DailySummaryPage />
             </ProtectedRoute>
           }
         />
