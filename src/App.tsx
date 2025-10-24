@@ -6,6 +6,7 @@ import SignupPage from './Pages/Signup/signup-page';
 import ProtectedRoute from './components/protected-route';
 import DashboardPage from './Pages/Dashbaord/page';
 import DailySummaryPage from './Pages/Dashbaord/Summary/daily-summary-page';
+import MonthlySummaryPage from './Pages/Dashbaord/Summary/monthly-summary-page';
 
 function App() {
   return (
@@ -32,6 +33,14 @@ function App() {
           element={
             <ProtectedRoute>
               <DailySummaryPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/monthly-summary"
+          element={
+            <ProtectedRoute>
+              <MonthlySummaryPage />
             </ProtectedRoute>
           }
         />

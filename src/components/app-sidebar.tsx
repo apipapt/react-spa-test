@@ -44,7 +44,7 @@ const data = {
         },
         {
           title: "Monthly Transactions",
-          url: "#",
+          url: "/monthly-summary",
         },
         {
           title: "Yearly Transactions",

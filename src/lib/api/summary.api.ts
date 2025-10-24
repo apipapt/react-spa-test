@@ -6,8 +6,21 @@ export interface Transaction {
   amount: number;
 }
 
+export interface MonthTransaction {
+  current: number;
+  growth: number;
+  month: string;
+  previous: number;
+}
+
 export interface DailySummaryResponse {
   items: Transaction[];
+  totalRecords: number;
+  totalPages: number;
+}
+
+export interface MonthlySummaryResponse {
+  items: MonthTransaction[];
   totalRecords: number;
   totalPages: number;
 }
@@ -28,3 +41,23 @@ export const getDailySummary = async (startDate: string, endDate: string): Promi
     throw new Error('Failed to fetch daily summary');
   }
 };
+
+
+// The monthly summary endpoint expects `startMonth` and `endMonth` in the format YYYY-MM
+export const getMonthlySummary = async (startMonth: string, endMonth: string): Promise<MonthlySummaryResponse> => {
+  try {
+    const response = await api.get(`/v1/summaries/monthly-transactions`, {
+      params: {
+        startMonth,
+        endMonth,
+      },
+    });
+    return response.data;
+  } catch (err: unknown) {
+    const e = err as { response?: { data?: { message?: string } }; message?: string } | undefined;
+    if (e?.response?.data?.message) throw new Error(e.response.data.message);
+    if (e?.message) throw new Error(e.message);
+    throw new Error('Failed to fetch monthly summary');
+  }
+};
+
