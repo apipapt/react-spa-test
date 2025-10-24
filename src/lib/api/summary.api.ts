@@ -30,8 +30,8 @@ export const getDailySummary = async (startDate: string, endDate: string): Promi
     const response = await api.get(`/v1/summaries/daily-transactions`, {
       params: {
         startDate,
-        endDate
-      }
+        endDate,
+      },
     });
     return response.data;
   } catch (err: unknown) {
@@ -58,6 +58,36 @@ export const getMonthlySummary = async (startMonth: string, endMonth: string): P
     if (e?.response?.data?.message) throw new Error(e.response.data.message);
     if (e?.message) throw new Error(e.message);
     throw new Error('Failed to fetch monthly summary');
+  }
+};
+
+// Yearly summary types and API
+export interface YearTransaction {
+  year: string;
+  amount: number;
+}
+
+export interface YearlySummaryResponse {
+  current: YearTransaction;
+  previous: YearTransaction;
+  percentage: number;
+  responseCode: number;
+  responseMessage: string;
+}
+
+export const getYearlySummary = async (year: string): Promise<YearlySummaryResponse> => {
+  try {
+    const response = await api.get(`/v1/summaries/yearly-transactions`, {
+      params: {
+        year,
+      },
+    });
+    return response.data;
+  } catch (err: unknown) {
+    const e = err as { response?: { data?: { message?: string } }; message?: string } | undefined;
+    if (e?.response?.data?.message) throw new Error(e.response.data.message);
+    if (e?.message) throw new Error(e.message);
+    throw new Error('Failed to fetch yearly summary');
   }
 };
 

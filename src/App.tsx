@@ -7,6 +7,7 @@ import ProtectedRoute from './components/protected-route';
 import DashboardPage from './Pages/Dashbaord/page';
 import DailySummaryPage from './Pages/Dashbaord/Summary/daily-summary-page';
 import MonthlySummaryPage from './Pages/Dashbaord/Summary/monthly-summary-page';
+import YearlySummaryPage from './Pages/Dashbaord/Summary/yearly-summary-page';
 
 function App() {
   return (
@@ -41,6 +42,14 @@ function App() {
           element={
             <ProtectedRoute>
               <MonthlySummaryPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/yearly-summary"
+          element={
+            <ProtectedRoute>
+              <YearlySummaryPage />
             </ProtectedRoute>
           }
         />
