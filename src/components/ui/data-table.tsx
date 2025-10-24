@@ -4,6 +4,7 @@ import {
   type ColumnFiltersState,
   type SortingState,
   type VisibilityState,
+  type PaginationState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -21,7 +22,6 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 
@@ -31,6 +31,7 @@ interface DataTableProps<TData, TValue> {
   searchColumn?: string
   searchPlaceholder?: string
   loading?: boolean
+  pageSize?: number
 }
 
 export function DataTable<TData, TValue>({
@@ -39,10 +40,22 @@ export function DataTable<TData, TValue>({
   searchColumn,
   searchPlaceholder = "Filter...",
   loading = false,
+  pageSize,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: pageSize ?? 10,
+  })
+
+  // If the consumer passes a pageSize (for server-side paging), keep pagination in sync
+  React.useEffect(() => {
+    const size = pageSize ?? data.length ?? pagination.pageSize
+    setPagination((p) => ({ ...p, pageIndex: 0, pageSize: size }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageSize, data.length])
 
   const table = useReactTable({
     data,
@@ -54,10 +67,12 @@ export function DataTable<TData, TValue>({
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
+      pagination,
     },
   })
 
@@ -71,11 +86,13 @@ export function DataTable<TData, TValue>({
         <div className="rounded-md border">
           <Table>
             <TableHeader>
-              {columns.map((column, index) => (
-                <TableHead key={index}>
-                  <Skeleton className="h-4 w-[100px]" />
-                </TableHead>
-              ))}
+              <TableRow>
+                {columns.map((_, index) => (
+                  <TableHead key={index}>
+                    <Skeleton className="h-4 w-[100px]" />
+                  </TableHead>
+                ))}
+              </TableRow>
             </TableHeader>
             <TableBody>
               {Array.from({ length: 5 }).map((_, rowIndex) => (
@@ -151,24 +168,6 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
       </div>
     </div>
   )

@@ -4,7 +4,7 @@ import LoginPage from './Pages/Login/login-page';
 import ProfilePage from './Pages/Dashbaord/Profile/profile-page';
 import SignupPage from './Pages/Signup/signup-page';
 import ProtectedRoute from './components/protected-route';
-import DashboardPage from './Pages/Dashbaord/page';
+// import DashboardPage from './Pages/Dashbaord/page';
 import DailySummaryPage from './Pages/Dashbaord/Summary/daily-summary-page';
 import MonthlySummaryPage from './Pages/Dashbaord/Summary/monthly-summary-page';
 import YearlySummaryPage from './Pages/Dashbaord/Summary/yearly-summary-page';
@@ -20,7 +20,7 @@ function App() {
           path="/"
           element={
             <ProtectedRoute>
-              <DashboardPage />
+              <DailySummaryPage />
             </ProtectedRoute>
           }
         />

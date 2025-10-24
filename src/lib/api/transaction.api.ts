@@ -10,7 +10,7 @@ export interface TransactionItem {
   date_order: string;
   paid_at: string;
   created_at: string;
-  reference_id: string;
+  reference_no: string;
   sales: string;
   customer: {
     name: string;
@@ -28,7 +28,7 @@ export interface TransactionItemResponse {
   dateOrder: string;
   paidAt: string;
   createdAt: string;
-  referenceId: string;
+  referenceNo: string;
   sales: string;
   customer: {
     name: string;
@@ -90,7 +90,7 @@ export const getTransactions = async (params: TransactionQueryParams): Promise<T
       date_order: item.dateOrder,
       paid_at: item.paidAt,
       created_at: item.createdAt,
-      reference_id: item.referenceId,
+      reference_no: item.referenceNo,
       sales: item.sales,
     }));
 

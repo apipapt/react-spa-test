@@ -41,7 +41,7 @@ export default function DetailTransactionPage() {
         <CardContent className="grid gap-4">
           <DetailItem 
             label="Reference ID" 
-            value={data?.reference_id ?? ''} 
+            value={data?.reference_no ?? ''} 
             loading={loading}
           />
           <DetailItem 
