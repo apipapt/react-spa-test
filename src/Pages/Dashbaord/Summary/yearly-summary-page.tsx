@@ -133,7 +133,8 @@ export default function YearlySummaryPage() {
                       <div className={`text-2xl font-bold ${colorText}`}>
                         {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(totalCurrent - totalPrevious)}
                       </div>
-                      <div className={`text-lg font-bold ${colorText}`}>{avgGrowth} %</div>
+                      <div className={`text-lg
+                         font-bold ${colorText}`}>{avgGrowth} %</div>
                     </div>
                   )}
                 </CardContent>
