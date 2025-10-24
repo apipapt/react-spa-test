@@ -52,7 +52,7 @@ const data = {
         },
         {
           title: "Top Customers",
-          url: "#",
+          url: "/top-customers-summary",
         },
       ],
     },

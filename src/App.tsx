@@ -8,6 +8,7 @@ import DashboardPage from './Pages/Dashbaord/page';
 import DailySummaryPage from './Pages/Dashbaord/Summary/daily-summary-page';
 import MonthlySummaryPage from './Pages/Dashbaord/Summary/monthly-summary-page';
 import YearlySummaryPage from './Pages/Dashbaord/Summary/yearly-summary-page';
+import TopCustomerSummaryPage from './Pages/Dashbaord/Summary/top-customer-summary-page';
 
 function App() {
   return (
@@ -50,6 +51,14 @@ function App() {
           element={
             <ProtectedRoute>
               <YearlySummaryPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/top-customers-summary"
+          element={
+            <ProtectedRoute>
+              <TopCustomerSummaryPage />
             </ProtectedRoute>
           }
         />
