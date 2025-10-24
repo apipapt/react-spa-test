@@ -64,12 +64,12 @@ const data = {
       ],
     },
     {
-      title: "Community",
+      title: "Profile",
       url: "#",
       items: [
         {
-          title: "Contribution Guide",
-          url: "#",
+          title: "My Profile",
+          url: "/my-profile",
         },
       ],
     },

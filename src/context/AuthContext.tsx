@@ -14,8 +14,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (credentials: LoginCredentials) => {
     const userData = await apiLogin(credentials);
     setIsAuthenticated(true);
-    setUser((userData as User) ?? null);
-    return userData as User;
+    // cast via unknown to avoid incompatible-type complaints
+    const u = userData as unknown as User;
+    setUser(u ?? null);
+    return u;
   };
 
   const logout = () => {
