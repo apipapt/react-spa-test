@@ -15,6 +15,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button";
 import { getProfile } from "@/lib/api/profile.api";
 
@@ -23,7 +24,8 @@ type Profile = {
   phone?: string;
   email?: string;
   address?: string;
-  avatarUrl?: string;
+  profileImage?: string;
+  roleName?: string;
 };
 
 export default function ProfilePage() {
@@ -82,7 +84,11 @@ export default function ProfilePage() {
               <CardHeader>
                 <div className="flex items-center gap-4">
                   <div className="h-20 w-20 rounded-full bg-muted flex items-center justify-center text-xl font-semibold text-muted-foreground">
-                    {profile?.name ? profile.name.split(" ").map(n=>n[0]).slice(0,2).join("") : "U"}
+                    
+                    <Avatar className="size-19">
+                      <AvatarImage src={profile?.profileImage} />
+                      <AvatarFallback>{profile?.name ? profile.name.split(" ").map(n=>n[0]).slice(0,2).join("") : "U"}</AvatarFallback>
+                    </Avatar>
                   </div>
                   <div>
                     <CardTitle>{profile?.name ?? (loading ? 'Loading...' : 'No name')}</CardTitle>
@@ -95,11 +101,11 @@ export default function ProfilePage() {
                   <div className="text-sm text-muted-foreground">Phone</div>
                   <div className="font-medium">{profile?.phone ?? '-'}</div>
 
-                  <div className="text-sm text-muted-foreground">Address</div>
-                  <div className="font-medium">{profile?.address ?? '-'}</div>
+                  <div className="text-sm text-muted-foreground">Status</div>
+                  <div className="font-medium">{profile?.roleName ?? '-'}</div>
                 </div>
                 <div className="mt-4">
-                  <Button> Edit Profile </Button>
+                  <Button> Edit Password </Button>
                 </div>
               </CardContent>
             </Card>
@@ -130,8 +136,8 @@ export default function ProfilePage() {
                         <div className="font-medium">{profile?.phone ?? '-'}</div>
                       </div>
                       <div>
-                        <div className="text-sm text-muted-foreground">Address</div>
-                        <div className="font-medium">{profile?.address ?? '-'}</div>
+                        <div className="text-sm text-muted-foreground">Status</div>
+                        <div className="font-medium">{profile?.roleName ?? '-'}</div>
                       </div>
                     </div>
                   )}

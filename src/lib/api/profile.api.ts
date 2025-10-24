@@ -1,4 +1,4 @@
-import api from './auth.api';
+import { api } from './auth.api';
 
 interface ProfileData {
   name?: string;

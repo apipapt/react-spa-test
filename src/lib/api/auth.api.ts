@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance } from 'axios';
 
 // Use relative URL for API calls (will be handled by Vite proxy)
-const api: AxiosInstance = axios.create({
+export const api: AxiosInstance = axios.create({
   baseURL: '/api',
   headers: {
     'Content-Type': 'application/json',
@@ -10,6 +10,12 @@ const api: AxiosInstance = axios.create({
   // No need for withCredentials when using proxy
   withCredentials: false,
 });
+
+// Initialize auth token from localStorage if it exists
+const token = localStorage.getItem('authToken');
+if (token) {
+  api.defaults.headers.common.Authorization = `Bearer ${token}`;
+}
 
 export const setAuthToken = (token: string | null) => {
   if (token) {
@@ -29,7 +35,8 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error?.response?.status === 401) {
-      // clearAuthToken();
+      clearAuthToken();
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
@@ -101,8 +108,15 @@ export const login = async (credentials: { phone: string; password: string }) =>
   }
 };
 
-export const logout = () => {
-  clearAuthToken();
+export const logout = async () => {
+  const response = await api.post('/v1/auth/logout');
+  if (response.data.responseCode === "20000") {
+    clearAuthToken();
+    window.location.href = '/login';
+    return response.data;
+  }
+
+  throw new Error('Logout failed');
 };
 
 export const getDashboardData = async () => {
