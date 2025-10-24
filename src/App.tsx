@@ -9,6 +9,8 @@ import DailySummaryPage from './Pages/Dashbaord/Summary/daily-summary-page';
 import MonthlySummaryPage from './Pages/Dashbaord/Summary/monthly-summary-page';
 import YearlySummaryPage from './Pages/Dashbaord/Summary/yearly-summary-page';
 import TopCustomerSummaryPage from './Pages/Dashbaord/Summary/top-customer-summary-page';
+import TransactionPage from './Pages/Dashbaord/Transaction/transaction-page';
+import DetailTransactionPage from './Pages/Dashbaord/Transaction/detail-transaction-page';
 
 function App() {
   return (
@@ -59,6 +61,22 @@ function App() {
           element={
             <ProtectedRoute>
               <TopCustomerSummaryPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/transactions"
+          element={
+            <ProtectedRoute>
+              <TransactionPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/transaction/:id"
+          element={
+            <ProtectedRoute>
+              <DetailTransactionPage />
             </ProtectedRoute>
           }
         />

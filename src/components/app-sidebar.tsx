@@ -62,7 +62,7 @@ const data = {
     },
     {
       title: "Transactions",
-      url: "#",
+      url: "/transactions",
     },
     {
       title: "Profile",
