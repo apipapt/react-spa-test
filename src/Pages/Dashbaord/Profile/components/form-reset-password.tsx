@@ -24,7 +24,13 @@ import { updatePassword } from "@/lib/api/profile.api";
 import { toast } from "sonner";
 
 const formSchema = z.object({
-  currentPassword: z.string().min(6, "Password must be at least 6 characters"),
+  currentPassword: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character"
+    ),
   newPassword: z
     .string()
     .min(8, "Password must be at least 8 characters")
